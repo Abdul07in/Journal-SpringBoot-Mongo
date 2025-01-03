@@ -1,26 +1,24 @@
 package com.majeed.journals.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Document(collection = "journal_entries")
 @Setter
-@Getter()
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Journal {
 
     @Id
     private ObjectId id;
+
+    @NonNull
     private String title;
     private String content;
     private LocalDateTime dateTime;
