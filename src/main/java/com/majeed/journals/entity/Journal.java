@@ -29,5 +29,9 @@ public class Journal {
         return id.toString();
     }
 
+    public String getDateTime() {
+        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a"));
+    }
+
 
 }
