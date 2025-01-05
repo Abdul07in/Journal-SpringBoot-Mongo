@@ -2,13 +2,12 @@ package com.majeed.journals.controller;
 
 import com.majeed.journals.entity.User;
 import com.majeed.journals.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -18,6 +17,7 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+
     }
 
     @GetMapping
@@ -25,22 +25,12 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        try {
-            userService.saveUser(user);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        } catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("message", e.getMessage());
-            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
-        }
-    }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String username) {
+    @PutMapping()
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
         try {
-            User userByUsername = userService.findUserByUsername(username);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User userByUsername = userService.findUserByUsername(authentication.getName());
             if (userByUsername != null) {
                 userByUsername.setUsername(user.getUsername());
                 userByUsername.setPassword(user.getPassword());
@@ -51,6 +41,17 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestBody User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = userService.findUserByUsername(authentication.getName());
+        if (authUser != null) {
+            userService.deleteUser(authUser.getId());
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 

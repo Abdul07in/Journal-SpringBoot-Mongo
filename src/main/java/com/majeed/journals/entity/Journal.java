@@ -23,13 +23,5 @@ public class Journal {
     private String content;
     private LocalDateTime dateTime;
 
-    public String getId() {
-        return id.toString();
-    }
-
-    public String getDateTime() {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a"));
-    }
-
 
 }
