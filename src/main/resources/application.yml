@@ -1,0 +1,22 @@
+#spring.application.name=Journals
+#
+#spring.data.mongodb.database=journals_db
+#spring.data.mongodb.uri=${MONGODB_URI}
+#spring.data.mongodb.auto-index-creation=true
+
+
+spring:
+  application:
+    name: Journals
+  data:
+    mongodb:
+      database: journals_db
+      uri: ${MONGODB_URI}
+      auto-index-creation: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /journal
+
+
