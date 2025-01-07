@@ -1,15 +1,24 @@
 package com.majeed.journals.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class WeatherResponse {
     private Request request;
     private Location location;
     private Current current;
 
+    @Getter
+    @Setter
     public class Current {
         @JsonProperty("observation_time")
         private String observationTime;
@@ -38,6 +47,8 @@ public class WeatherResponse {
         private String isDay;
     }
 
+    @Getter
+    @Setter
     public class Location {
         private String name;
         private String country;
@@ -53,6 +64,8 @@ public class WeatherResponse {
         private String utcOffset;
     }
 
+    @Getter
+    @Setter
     public class Request {
         private String type;
         private String query;

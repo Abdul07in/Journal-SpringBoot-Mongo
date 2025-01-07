@@ -2,6 +2,7 @@ package com.majeed.journals.controller;
 
 import com.majeed.journals.entity.User;
 import com.majeed.journals.service.UserService;
+import com.majeed.journals.service.WeatherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final WeatherService weatherService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, WeatherService weatherService) {
         this.userService = userService;
-
+        this.weatherService = weatherService;
     }
 
     @PutMapping()
@@ -49,7 +51,8 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> greeting() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok("Hello, " + authentication.getName() + "!");
+        int temperature = weatherService.getWeather("Mumbai").getCurrent().getTemperature();
+        return ResponseEntity.ok("Hello, " + authentication.getName() + "! , Weather feels like " + temperature + " degree." );
     }
 
 
