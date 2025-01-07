@@ -3,6 +3,8 @@ package com.majeed.journals.service;
 import com.majeed.journals.entity.User;
 import com.majeed.journals.repository.UserRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
@@ -30,6 +33,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        logger.info("Updating user: " + user.getUsername());
         return userRepository.save(user);
     }
 

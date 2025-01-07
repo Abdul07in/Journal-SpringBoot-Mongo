@@ -7,8 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -19,12 +17,6 @@ public class UserController {
         this.userService = userService;
 
     }
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
 
     @PutMapping()
     public ResponseEntity<?> updateUser(@RequestBody User user) {
@@ -52,6 +44,12 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greeting() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok("Hello, " + authentication.getName() + "!");
     }
 
 
