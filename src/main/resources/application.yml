@@ -18,3 +18,13 @@ server:
   port: 8080
   servlet:
     context-path: /journal
+
+
+weather:
+  api:
+    key: ba9f80960815791caa42e03930c0613d
+
+
+quotes:
+  api:
+    url: https://dummyjson.com

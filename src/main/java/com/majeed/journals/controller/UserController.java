@@ -1,6 +1,8 @@
 package com.majeed.journals.controller;
 
+import com.majeed.journals.api.response.WeatherResponse;
 import com.majeed.journals.entity.User;
+import com.majeed.journals.service.QuotesService;
 import com.majeed.journals.service.UserService;
 import com.majeed.journals.service.WeatherService;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,12 @@ public class UserController {
 
     private final UserService userService;
     private final WeatherService weatherService;
+    private final QuotesService quotesService;
 
-    public UserController(UserService userService, WeatherService weatherService) {
+    public UserController(UserService userService, WeatherService weatherService, QuotesService quotesService) {
         this.userService = userService;
         this.weatherService = weatherService;
+        this.quotesService = quotesService;
     }
 
     @PutMapping()
@@ -51,8 +55,16 @@ public class UserController {
     @GetMapping
     public ResponseEntity<?> greeting() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        int temperature = weatherService.getWeather("Mumbai").getCurrent().getTemperature();
-        return ResponseEntity.ok("Hello, " + authentication.getName() + "! , Weather feels like " + temperature + " degree." );
+        String greeting = "";
+        WeatherResponse weatherResponse = weatherService.getWeather("Mumbai");
+        String quotes = quotesService.getQuotes();
+        if (weatherResponse != null) {
+            greeting = " , Weather feels like " + weatherResponse.getCurrent().getFeelslike();
+        }
+        if (quotes != null) {
+            greeting += " , " + quotes;
+        }
+        return ResponseEntity.ok("Hello, " + authentication.getName() + "! " + greeting);
     }
 
 

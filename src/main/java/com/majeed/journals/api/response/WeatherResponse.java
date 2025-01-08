@@ -19,7 +19,7 @@ public class WeatherResponse {
 
     @Getter
     @Setter
-    public class Current {
+    public static class Current {
         @JsonProperty("observation_time")
         private String observationTime;
         private int temperature;
@@ -49,7 +49,7 @@ public class WeatherResponse {
 
     @Getter
     @Setter
-    public class Location {
+    public static class Location {
         private String name;
         private String country;
         private String region;
@@ -66,7 +66,7 @@ public class WeatherResponse {
 
     @Getter
     @Setter
-    public class Request {
+    public static class Request {
         private String type;
         private String query;
         private String language;
