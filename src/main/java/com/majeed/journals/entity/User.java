@@ -32,7 +32,8 @@ public class User {
 
     private List<String> roles;
 
-    public User(ObjectId testUserId, String testuser, String password123) {
+    private String email;
 
-    }
+    private Boolean sentimentAnalysis;
+
 }

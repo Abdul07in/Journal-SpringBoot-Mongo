@@ -13,6 +13,18 @@ spring:
       database: journals_db
       uri: ${MONGODB_URI}
       auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: abdulkanoor@gmail.com
+    password: ${APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 server:
   port: 8080
@@ -28,3 +40,4 @@ weather:
 quotes:
   api:
     url: https://dummyjson.com
+
