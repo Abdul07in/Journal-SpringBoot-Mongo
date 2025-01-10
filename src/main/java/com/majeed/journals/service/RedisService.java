@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @Slf4j
 public class RedisService {
@@ -29,7 +31,9 @@ public class RedisService {
 
     public void set(String key, Object o, Long ttl) {
         try {
-            redisTemplate.opsForValue().set(key, o, ttl);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(o);
+            redisTemplate.opsForValue().set(key, o, ttl, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(e.getMessage());
 

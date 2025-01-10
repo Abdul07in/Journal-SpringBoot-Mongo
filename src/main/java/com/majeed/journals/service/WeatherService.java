@@ -25,10 +25,17 @@ public class WeatherService {
 
 
     public WeatherResponse getWeather(String city) {
-        redisService.get("weather:" + city , WeatherResponse.class);
-        String url = BASE_URL.replace("API_KEY", API_KEY).replace("CITY", city);
-        ResponseEntity<WeatherResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, WeatherResponse.class);
-        return responseEntity.getBody();
+        WeatherResponse weatherResponse = redisService.get("weather:" + city, WeatherResponse.class);
+        if (weatherResponse != null) {
+            return weatherResponse;
+        } else {
+            String url = BASE_URL.replace("API_KEY", API_KEY).replace("CITY", city);
+            ResponseEntity<WeatherResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, WeatherResponse.class);
+            if (responseEntity.getBody() != null) {
+                redisService.set("weather:" + city, responseEntity.getBody(), 1200L);
+            }
+            return responseEntity.getBody();
+        }
     }
 
 }
