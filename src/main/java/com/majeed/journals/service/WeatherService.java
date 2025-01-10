@@ -16,13 +16,16 @@ public class WeatherService {
 
 
     private final RestTemplate restTemplate;
+    private final RedisService redisService;
 
-    public WeatherService(RestTemplate restTemplate) {
+    public WeatherService(RestTemplate restTemplate, RedisService redisService) {
         this.restTemplate = restTemplate;
+        this.redisService = redisService;
     }
 
 
     public WeatherResponse getWeather(String city) {
+        redisService.get("weather:" + city , WeatherResponse.class);
         String url = BASE_URL.replace("API_KEY", API_KEY).replace("CITY", city);
         ResponseEntity<WeatherResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, WeatherResponse.class);
         return responseEntity.getBody();
