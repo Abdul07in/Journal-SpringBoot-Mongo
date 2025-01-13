@@ -1,5 +1,6 @@
 package com.majeed.journals.config;
 
+import com.majeed.journals.filters.JwtFilter;
 import com.majeed.journals.service.UserServiceDetailsImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final UserServiceDetailsImpl userServiceDetails;
+    private final JwtFilter jwtFilter;
 
-    public SecurityConfig(UserServiceDetailsImpl userServiceDetails) {
+    public SecurityConfig(UserServiceDetailsImpl userServiceDetails, JwtFilter jwtFilter) {
         this.userServiceDetails = userServiceDetails;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -33,12 +37,13 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
