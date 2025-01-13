@@ -14,8 +14,7 @@ spring:
       uri: ${MONGODB_URI}
       auto-index-creation: true
     redis:
-      host: localhost
-      port: 6379
+      url: ${REDIS_URL}
   mail:
     host: smtp.gmail.com
     port: 587
@@ -44,6 +43,4 @@ quotes:
     url: https://dummyjson.com
 
 
-
-
-
+SECRET_KEY: ${JWT_KEY}
